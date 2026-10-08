@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio Munfarid Zulkahfi — S1 Sistem Informasi, Web Development, Laravel, Filament, MySQL.">
+    <meta name="author" content="Munfarid Zulkahfi">
+    <title>Munfarid Zulkahfi — Portfolio</title>
+
+    <style>
+        :root {
+            --bg: #252734;
+            --bg-2: #2b2d3a;
+            --bg-3: #1f212b;
+            --card: rgba(255, 255, 255, 0.035);
+            --card-strong: rgba(255, 255, 255, 0.055);
+            --gold: #d9b56d;
+            --gold-light: #f0d28e;
+            --white: #ffffff;
+            --white-soft: #d6d7de;
+            --muted: #9698a6;
+            --line: rgba(217, 181, 109, 0.28);
+            --line-soft: rgba(255, 255, 255, 0.09);
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+            --ease: cubic-bezier(.2,.75,.2,1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+            color: var(--white);
+            background:
+                radial-gradient(circle at 12% 8%, rgba(217,181,109,.055), transparent 24%),
+                radial-gradient(circle at 88% 32%, rgba(217,181,109,.035), transparent 22%),
+                var(--bg);
+            line-height: 1.7;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(rgba(255,255,255,.05) .55px, transparent .55px);
+            background-size: 18px 18px;
+            opacity: .035;
+            z-index: -1;
+        }
+        a { color: inherit; text-decoration: none; }
+        img { display: block; max-width: 100%; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        ::selection { background: var(--gold); color: var(--bg); }
+        .container { width: min(1180px, 90%); margin-inline: auto; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; inset: 0 0 auto 0; z-index: 1000;
+            background: rgba(37,39,52,.68);
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .nav-container {
+            min-height: 78px;
+            display: flex; align-items: center; justify-content: space-between; gap: 30px;
+        }
+        .brand { color: var(--gold); font-size: .92rem; font-weight: 700; letter-spacing: 2px; white-space: nowrap; }
+        .nav-menu { list-style: none; display: flex; align-items: center; gap: 30px; }
+        .nav-link { position: relative; color: var(--white-soft); font-size: .88rem; padding: 8px 0; transition: color .3s ease; }
+        .nav-link::after { content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--gold); transition:width .35s var(--ease); }
+        .nav-link:hover, .nav-link.active { color: var(--gold); }
+        .nav-link.active::after, .nav-link:hover::after { width:100%; }
+
+        /* COMMON */
+        section { position: relative; padding: 115px 0; }
+        .eyebrow { color: var(--gold); font-size: .72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+        .section-title { font-size: clamp(2.2rem, 4vw, 3.5rem); line-height: 1.04; letter-spacing: -1.6px; margin-bottom: 14px; }
+        .section-copy { max-width: 720px; color: var(--white-soft); font-size: .93rem; }
+        .section-head { margin-bottom: 54px; }
+        .gold { color: var(--gold); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+        .reveal.show { opacity: 1; transform: translateY(0); }
+
+        /* HERO */
+        .hero { min-height: 100vh; display:flex; align-items:center; padding:140px 0 110px; }
+        .hero-grid { display:grid; grid-template-columns: .88fr 1.12fr; gap: 90px; align-items:center; }
+        .hero-visual { position:relative; width:min(100%, 430px); margin-inline:auto; }
+        .hero-ring {
+            position:absolute; inset:-24px; border:1px solid rgba(217,181,109,.18); border-radius: 34px 120px 34px 120px;
+            transform: rotate(-4deg); animation: ringFloat 7s ease-in-out infinite;
+        }
+        .hero-ring::after {
+            content:""; position:absolute; width:120px; height:1px; background:var(--gold); left:18px; top:18px; opacity:.8;
+            animation: sweep 5s linear infinite;
+        }
+        .photo-frame {
+            position:relative; overflow:hidden; aspect-ratio:4/5; border:1px solid var(--line); border-radius:28px 110px 28px 110px;
+            background:#303240; box-shadow:var(--shadow); transform:translateZ(0);
+        }
+        .photo-frame::before { content:""; position:absolute; inset:16px; border:1px solid rgba(217,181,109,.24); border-radius:20px 88px 20px 88px; z-index:2; pointer-events:none; }
+        .photo-frame::after { content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 25%, rgba(255,255,255,.08) 50%, transparent 70%); transform:translateX(-130%); animation: photoShine 7s ease-in-out infinite; z-index:3; }
+        .profile-image { width:100%; height:100%; object-fit:cover; object-position:center top; animation: portraitFloat 6s ease-in-out infinite; }
+        .photo-caption { position:absolute; left:28px; right:28px; bottom:24px; z-index:4; display:flex; justify-content:space-between; align-items:end; gap:15px; }
+        .caption-tag { padding:7px 11px; border:1px solid rgba(217,181,109,.30); background:rgba(31,33,43,.72); backdrop-filter:blur(6px); color:var(--gold-light); font-size:.68rem; letter-spacing:1.4px; text-transform:uppercase; }
+        .caption-year { color:rgba(255,255,255,.66); font-size:.7rem; }
+        .hero-copy { position:relative; }
+        .hero-title { font-size:clamp(3.1rem, 6.3vw, 6rem); line-height:.95; letter-spacing:-3px; margin-bottom:20px; }
+        .hero-title span { color:var(--gold); }
+        .hero-role { display:flex; align-items:center; gap:13px; color:var(--white-soft); font-size:.98rem; margin-bottom:25px; }
+        .role-line { width:52px; height:1px; background:var(--gold); }
+        .hero-description { max-width:730px; color:var(--white-soft); font-size:.96rem; margin-bottom:28px; }
+        .hero-description strong { color:var(--gold-light); }
+        .hero-stats { display:grid; grid-template-columns:repeat(4, minmax(110px,1fr)); gap:10px; margin-bottom:28px; }
+        .stat { padding:13px 14px; border:1px solid var(--line-soft); background:rgba(255,255,255,.018); border-radius:7px; transition:.35s var(--ease); }
+        .stat:hover { border-color:var(--line); transform:translateY(-4px); background:var(--card-strong); }
+        .stat strong { display:block; color:var(--gold); font-size:.92rem; }
+        .stat span { color:var(--muted); font-size:.68rem; }
+        .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:27px; }
+        .btn { min-height:48px; padding:0 23px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; font-size:.82rem; font-weight:600; transition:.35s var(--ease); }
+        .btn-primary { color:var(--bg); background:var(--gold); border:1px solid var(--gold); }
+        .btn-primary:hover { background:var(--gold-light); border-color:var(--gold-light); transform:translateY(-4px); box-shadow:0 15px 35px rgba(217,181,109,.12); }
+        .btn-outline { color:var(--gold); border:1px solid var(--line); }
+        .btn-outline:hover { border-color:var(--gold); background:rgba(217,181,109,.06); transform:translateY(-4px); }
+        .socials { display:flex; align-items:center; gap:8px; }
+        .social-label { color:var(--muted); font-size:.7rem; letter-spacing:1px; margin-right:5px; }
+        .social { width:38px; height:38px; border:1px solid rgba(255,255,255,.14); border-radius:50%; display:grid; place-items:center; color:var(--white-soft); font-size:.63rem; font-weight:700; transition:.3s var(--ease); }
+        .social:hover { color:var(--gold); border-color:var(--gold); transform:translateY(-4px) rotate(-5deg); }
+
+        /* ABOUT */
+        .about { background:linear-gradient(180deg, var(--bg-2), #292b38); }
+        .about-grid { display:grid; grid-template-columns:1.08fr .92fr; gap:48px; }
+        .about-main { padding:36px; border:1px solid var(--line-soft); border-radius:14px 62px 14px 62px; background:var(--card); box-shadow:0 18px 50px rgba(0,0,0,.12); }
+        .about-main h3 { color:var(--gold); margin-bottom:18px; font-size:1.25rem; }
+        .about-main p { color:var(--white-soft); font-size:.89rem; margin-bottom:15px; }
+        .about-main strong { color:var(--gold-light); }
+        .about-side { display:grid; gap:14px; }
+        .info-card { position:relative; overflow:hidden; padding:23px 24px; border-left:2px solid var(--gold); background:rgba(255,255,255,.025); transition:.35s var(--ease); }
+        .info-card:hover { transform:translateX(7px); background:rgba(217,181,109,.035); }
+        .info-card::after { content:""; position:absolute; left:-100px; bottom:0; width:80px; height:1px; background:var(--gold); transition:left .6s var(--ease); }
+        .info-card:hover::after { left:100%; }
+        .info-label { display:block; color:var(--gold); font-size:.66rem; font-weight:600; letter-spacing:1.8px; text-transform:uppercase; margin-bottom:6px; }
+        .info-title { display:block; color:var(--white); font-size:.96rem; }
+        .info-text { color:var(--muted); font-size:.79rem; margin-top:4px; }
+
+        /* SKILLS */
+        .skills-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:17px; }
+        .skill-card { min-height:170px; padding:23px; border:1px solid var(--line-soft); border-radius:10px; background:var(--card); display:flex; flex-direction:column; justify-content:space-between; transition:.4s var(--ease); }
+        .skill-card:nth-child(2), .skill-card:nth-child(5) { transform:translateY(16px); }
+        .skill-card:hover { transform:translateY(-8px); border-color:var(--gold); background:var(--card-strong); box-shadow:var(--shadow); }
+        .skill-card:nth-child(2):hover, .skill-card:nth-child(5):hover { transform:translateY(8px); }
+        .skill-logo { width:48px; height:48px; object-fit:contain; filter:grayscale(1); opacity:.78; transition:.4s var(--ease); }
+        .skill-card:hover .skill-logo { filter:grayscale(0); opacity:1; transform:translateY(-3px) scale(1.04); }
+        .skill-name { color:var(--white); font-size:.95rem; font-weight:600; }
+        .skill-desc { color:var(--muted); font-size:.73rem; margin-top:3px; }
+
+        /* CERTIFICATES */
+        .certificates { background:linear-gradient(180deg, #292b38, var(--bg)); }
+        .certificate-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+        .certificate-card { overflow:hidden; border:1px solid var(--line-soft); border-radius:12px 48px 12px 48px; background:var(--card); transition:.4s var(--ease); }
+        .certificate-card:hover { transform:translateY(-8px); border-color:var(--gold); box-shadow:var(--shadow); }
+        .certificate-image { position:relative; height:270px; overflow:hidden; display:grid; place-items:center; background:#232530; }
+        .certificate-image img { width:100%; height:100%; object-fit:contain; padding:10px; transition:transform .55s var(--ease); }
+        .certificate-card:hover .certificate-image img { transform:scale(1.045); }
+        .certificate-image::after { content:""; position:absolute; top:0; left:-100%; width:75px; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent); transform:skewX(-12deg); transition:left .7s var(--ease); }
+        .certificate-card:hover .certificate-image::after { left:130%; }
+        .certificate-content { padding:23px 24px 27px; }
+        .certificate-label { color:var(--gold); font-size:.66rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; margin-bottom:7px; display:block; }
+        .certificate-title { color:var(--white); font-size:1.03rem; line-height:1.4; margin-bottom:9px; }
+        .certificate-description { color:var(--muted); font-size:.8rem; line-height:1.7; margin-bottom:15px; }
+        .certificate-link, .portfolio-link { color:var(--gold); font-size:.76rem; font-weight:600; transition:color .25s ease; }
+        .certificate-link:hover, .portfolio-link:hover { color:var(--gold-light); }
+        .linkedin-box { margin-top:28px; padding-top:22px; border-top:1px solid rgba(217,181,109,.18); color:var(--white-soft); font-size:.83rem; }
+        .linkedin-box a { color:var(--gold); border-bottom:1px solid var(--gold); }
+
+        /* PORTFOLIO */
+#portfolio {
+    background: var(--bg);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+
+/* CARD */
+
+.portfolio-card {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid rgba(217, 181, 109, 0.18);
+
+    border-radius: 14px;
+
+    background: #2b2d3a;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-8px);
+
+    border-color: var(--gold);
+
+    box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.22);
+}
+
+
+/* IMAGE */
+
+.portfolio-image {
+    position: relative;
+
+    width: 100%;
+    height: 330px;
+
+    overflow: hidden;
+
+    background: #20222d;
+}
+
+
+.portfolio-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: top center;
+
+    transition:
+        transform 0.7s ease;
+}
+
+
+.portfolio-card:hover .portfolio-image img {
+    transform: scale(1.045);
+}
+
+
+/* OVERLAY */
+
+.portfolio-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 55%,
+            rgba(15, 16, 22, 0.45)
+        );
+
+    pointer-events: none;
+}
+
+
+/* CONTENT */
+
+.portfolio-content {
+    padding:
+        26px
+        28px
+        29px;
+}
+
+
+/* LABEL */
+
+.portfolio-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--gold);
+
+    font-size: 0.68rem;
+
+    font-weight: 600;
+
+    letter-spacing: 2.2px;
+
+    text-transform: uppercase;
+}
+
+
+/* TITLE */
+
+.portfolio-title {
+    margin-bottom: 11px;
+
+    color: var(--white);
+
+    font-size: 1.4rem;
+
+    line-height: 1.3;
+
+    font-weight: 600;
+}
+
+
+/* DESCRIPTION */
+
+.portfolio-description {
+    margin-bottom: 20px;
+
+    color: var(--text-muted);
+
+    font-size: 0.88rem;
+
+    line-height: 1.75;
+}
+
+
+/* TECHNOLOGY */
+
+.portfolio-tech {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 22px;
+}
+
+
+.portfolio-tech span {
+    padding:
+        6px
+        11px;
+
+    border:
+        1px solid
+        rgba(217, 181, 109, 0.22);
+
+    border-radius: 4px;
+
+    color: var(--gold);
+
+    font-size: 0.69rem;
+}
+
+
+/* LINK */
+
+.portfolio-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    color: var(--gold);
+
+    font-size: 0.78rem;
+
+    font-weight: 600;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.portfolio-link:hover {
+    color: var(--gold-light);
+
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   PORTFOLIO RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-image {
+        height: 350px;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .portfolio-image {
+        height: 250px;
+    }
+
+    .portfolio-content {
+        padding:
+            23px
+            22px
+            25px;
+    }
+
+    .portfolio-title {
+        font-size:
+            1.2rem;
+    }
+
+}
+
+        /* EXPERIENCE */
+        .experience { background:var(--bg-3); }
+        .experience-list { position:relative; max-width:980px; margin-inline:auto; }
+        .experience-list::before { content:""; position:absolute; top:2px; bottom:2px; left:31px; width:1px; background:linear-gradient(var(--gold), rgba(217,181,109,.08)); }
+        .experience-item { display:grid; grid-template-columns:64px 1fr; gap:26px; position:relative; margin-bottom:30px; }
+        .experience-number { width:64px; height:64px; border:1px solid var(--gold); border-radius:50%; display:grid; place-items:center; color:var(--gold); background:var(--bg-3); z-index:2; font-size:.72rem; font-weight:700; }
+        .experience-content { padding:27px 29px; border:1px solid var(--line-soft); border-radius:9px 40px 9px 40px; background:var(--card); transition:.4s var(--ease); }
+        .experience-content:hover { transform:translateX(7px); border-color:var(--line); background:var(--card-strong); }
+        .experience-label { color:var(--gold); display:block; font-size:.66rem; letter-spacing:2px; font-weight:600; text-transform:uppercase; margin-bottom:7px; }
+        .experience-title { color:var(--white); font-size:1.15rem; line-height:1.4; margin-bottom:5px; }
+        .experience-meta { color:var(--gold-light); font-size:.8rem; margin-bottom:14px; }
+        .experience-description { color:var(--white-soft); font-size:.83rem; line-height:1.75; margin-bottom:16px; }
+        .experience-tags { display:flex; flex-wrap:wrap; gap:7px; }
+        .experience-tags span { padding:5px 9px; border:1px solid rgba(217,181,109,.18); color:var(--gold); border-radius:4px; font-size:.64rem; }
+
+        /* CONTACT */
+        .contact-grid { display:grid; grid-template-columns:.82fr 1.18fr; gap:50px; align-items:stretch; }
+        .contact-intro { min-height:350px; padding:37px; border:1px solid var(--line); border-radius:62px 12px 62px 12px; background:var(--card); display:flex; flex-direction:column; justify-content:center; }
+        .contact-intro h3 { color:var(--gold); font-size:1.5rem; margin-bottom:12px; }
+        .contact-intro p { color:var(--white-soft); font-size:.87rem; }
+        .contact-list { display:grid; gap:13px; }
+        .contact-item { min-height:78px; padding:18px 22px; display:flex; align-items:center; border:1px solid var(--line-soft); background:var(--card); transition:.35s var(--ease); }
+        .contact-item:hover { transform:translateX(7px); border-color:var(--gold); background:var(--card-strong); }
+        .contact-label { width:100px; flex:none; color:var(--muted); font-size:.69rem; text-transform:uppercase; letter-spacing:1.5px; }
+        .contact-value { color:var(--white-soft); font-size:.84rem; word-break:break-word; }
+        .contact-value.gold { color:var(--gold); }
+
+        /* FOOTER */
+        footer { padding:27px 0; background:#1c1e27; border-top:1px solid rgba(255,255,255,.06); }
+        .footer-container { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+        .footer-text { color:rgba(255,255,255,.40); font-size:.76rem; }
+        .footer-name { color:var(--gold); }
+
+        /* FLOATING CURSOR GLOW (subtle) */
+        .cursor-glow { position:fixed; left:0; top:0; width:220px; height:220px; border-radius:50%; pointer-events:none; background:radial-gradient(circle, rgba(217,181,109,.06), transparent 65%); transform:translate(-50%,-50%); z-index:0; mix-blend-mode:screen; }
+
+        /* RESPONSIVE */
+        @media (max-width: 980px) {
+            .hero-grid, .about-grid, .contact-grid { grid-template-columns:1fr; }
+            .hero-grid { gap:55px; }
+            .hero-visual { max-width:360px; }
+            .skills-grid { grid-template-columns:repeat(2,1fr); }
+            .portfolio-grid { grid-template-columns:repeat(2,1fr); }
+            .certificate-grid { grid-template-columns:repeat(2,1fr); }
+        }
+
+        @media (max-width: 650px) {
+            html { scroll-padding-top:125px; }
+            .nav-container { min-height:auto; padding:16px 0; flex-direction:column; align-items:flex-start; }
+            .nav-menu { width:100%; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+            .nav-link { font-size:.76rem; }
+            .hero { padding:155px 0 85px; }
+            .hero-title { font-size:2.65rem; letter-spacing:-1.5px; }
+            .hero-description { font-size:.89rem; }
+            .hero-stats { grid-template-columns:repeat(2,1fr); }
+            .hero-actions { flex-direction:column; }
+            .btn { width:100%; }
+            .social-label { display:none; }
+            section { padding:78px 0; }
+            .section-title { font-size:2.2rem; }
+            .about-main { padding:28px; }
+            .skills-grid, .portfolio-grid, .certificate-grid { grid-template-columns:1fr; }
+            .skill-card:nth-child(2), .skill-card:nth-child(5) { transform:none; }
+            .skill-card:nth-child(2):hover, .skill-card:nth-child(5):hover { transform:translateY(-8px); }
+            .experience-list::before { left:23px; }
+            .experience-item { grid-template-columns:48px 1fr; gap:17px; }
+            .experience-number { width:48px; height:48px; font-size:.66rem; }
+            .experience-content { padding:21px; border-radius:8px 28px 8px 28px; }
+            .contact-item { flex-direction:column; align-items:flex-start; gap:4px; }
+            .contact-label { width:auto; }
+            .footer-container { flex-direction:column; text-align:center; }
+            .cursor-glow { display:none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+            .reveal { opacity:1; transform:none; }
+        }
+
+        /* ANIMATIONS */
+        @keyframes portraitFloat { 0%,100% { transform:scale(1) translateY(0); } 50% { transform:scale(1.018) translateY(-5px); } }
+        @keyframes ringFloat { 0%,100% { transform:rotate(-4deg) translateY(0); } 50% { transform:rotate(-1deg) translateY(-10px); } }
+        @keyframes sweep { 0% { transform:translateX(-130%); } 100% { transform:translateX(420%); } }
+        @keyframes photoShine { 0%,45% { transform:translateX(-130%); } 68%,100% { transform:translateX(130%); } }
+    </style>
+</head>
+<body>
+
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<header class="navbar">
+    <div class="container nav-container">
+        <a class="brand" href="#home">MUNFARID ZULKAHFI</a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a class="nav-link active" href="#home">Home</a></li>
+                <li><a class="nav-link" href="#about">About</a></li>
+                <li><a class="nav-link" href="#skills">Skills</a></li>
+                <li><a class="nav-link" href="#certificates">Certificates</a></li>
+                <li><a class="nav-link" href="#portfolio">Portfolio</a></li>
+                <li><a class="nav-link" href="#experience">Experience</a></li>
+                <li><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div class="hero-visual reveal">
+                <div class="hero-ring"></div>
+                <div class="photo-frame" data-parallax="0.055">
+                    <img class="profile-image" src="fotoku.jpeg" alt="Foto Munfarid Zulkahfi">
+                    <div class="photo-caption">
+                        <span class="caption-tag">Sistem Informasi</span>
+                        <span class="caption-year">2022 — Present</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-copy reveal">
+                <div class="eyebrow">Personal Portfolio</div>
+                <h1 class="hero-title">MUNFARID <span>ZULKAHFI</span></h1>
+                <div class="hero-role"><span class="role-line"></span><span>S1 Sistem Informasi · Web Development</span></div>
+                <p class="hero-description">
+                    Saya lulusan baru Universitas Duta Bangsa Surakarta Sistem Informasi angkatan 2022 yang tertarik pada bidang teknologi infrastruktur, bisnis, dan pengembangan sistem. Saya memiliki pengalaman dalam membangun dan mengembangkan website menggunakan <strong>Laravel dan Filament</strong>, dengan <strong>MySQL</strong> sebagai database.
+                    <br><br>
+                    Saya juga memiliki pengalaman magang di <strong>PT Media Sarana Digital Indo</strong> sebagai staff yang membantu mengelola data perusahaan serta mengerjakan project website yang diberikan perusahaan.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat"><strong>3.53</strong><span>IPK</span></div>
+                    <div class="stat"><strong>S1</strong><span>Sistem Informasi</span></div>
+                    <div class="stat"><strong>Laravel</strong><span>Web Development</span></div>
+                    <div class="stat"><strong>MySQL</strong><span>Database</span></div>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="#portfolio" class="btn btn-primary">LIHAT PORTFOLIO</a>
+                    <a href="#contact" class="btn btn-outline">HUBUNGI SAYA</a>
+                </div>
+
+                <div class="socials">
+                    <span class="social-label">CONNECT</span>
+                    <a class="social" href="https://www.linkedin.com/in/munfarid-zulkahfi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">IN</a>
+                    <a class="social" href="https://www.instagram.com/munkahf_" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
+                    <a class="social" href="mailto:faridkahfi926@gmail.com" aria-label="Email">@</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">01 — About</div>
+                <h2 class="section-title">About Me</h2>
+                <p class="section-copy">Latar belakang pendidikan, pengalaman, karakter, dan arah pengembangan profesional saya.</p>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-main reveal">
+                    <h3>Latar Belakang</h3>
+                    <p>Saya merupakan lulusan <strong>S1 Sistem Informasi</strong> dari <strong>Universitas Duta Bangsa Surakarta</strong> dengan IPK <strong>3.53</strong>.</p>
+                    <p>Selama menempuh pendidikan, saya memiliki ketertarikan pada pengembangan sistem, teknologi web, database, serta penerapan teknologi untuk membantu kebutuhan bisnis dan operasional.</p>
+                    <p>Saya memiliki pengalaman magang di <strong>PT Media Sarana Digital Indo</strong> sebagai staff yang membantu mengelola data perusahaan sekaligus mengerjakan project website yang diberikan perusahaan.</p>
+                    <p>Pengalaman tersebut membantu saya memahami bahwa pengembangan sistem bukan hanya berkaitan dengan kemampuan teknis, tetapi juga membutuhkan ketelitian, komunikasi, pemecahan masalah, dan pemahaman terhadap kebutuhan pengguna.</p>
+                </div>
+
+                <div class="about-side">
+                    <div class="info-card reveal"><span class="info-label">Pendidikan</span><span class="info-title">S1 Sistem Informasi</span><p class="info-text">Universitas Duta Bangsa Surakarta · IPK 3.53</p></div>
+                    <div class="info-card reveal"><span class="info-label">Pengalaman</span><span class="info-title">PT Media Sarana Digital Indo</span><p class="info-text">Staff Magang · Data Management &amp; Project Website</p></div>
+                    <div class="info-card reveal"><span class="info-label">Kelebihan</span><span class="info-title">Teliti, Adaptif &amp; Mau Belajar</span><p class="info-text">Terbiasa bekerja terstruktur, bertanggung jawab, mudah beradaptasi, dan memiliki kemauan belajar.</p></div>
+                    <div class="info-card reveal"><span class="info-label">Tujuan Profesional</span><span class="info-title">Berkembang di Bidang Teknologi</span><p class="info-text">Mengembangkan kemampuan dan berkontribusi melalui solusi digital yang bermanfaat.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">02 — Skills</div>
+                <h2 class="section-title">Tools I Work With</h2>
+                <p class="section-copy">Teknologi dan kemampuan yang saya pelajari dan gunakan dalam pengembangan website maupun sistem informasi.</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-card reveal"><img class="skill-logo" src="images/laravel.png" alt="Laravel"><div><div class="skill-name">Laravel</div><div class="skill-desc">Web Development</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/filament.png" alt="Filament"><div><div class="skill-name">Filament</div><div class="skill-desc">Admin Panel</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/mysql.png" alt="MySQL"><div><div class="skill-name">MySQL</div><div class="skill-desc">Database Management</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/php.png" alt="PHP"><div><div class="skill-name">PHP</div><div class="skill-desc">Backend Development</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/html5.png" alt="HTML5"><div><div class="skill-name">HTML5</div><div class="skill-desc">Web Structure</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/css3.png" alt="CSS3"><div><div class="skill-name">CSS3</div><div class="skill-desc">Web Styling</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/javascript.png" alt="JavaScript"><div><div class="skill-name">JavaScript</div><div class="skill-desc">Frontend Development</div></div></div>
+                <div class="skill-card reveal"><img class="skill-logo" src="images/git.png" alt="Git"><div><div class="skill-name">Git</div><div class="skill-desc">Version Control</div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="certificates" id="certificates">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">03 — Certificates</div>
+                <h2 class="section-title">Certificates</h2>
+                <p class="section-copy">Sertifikat dan pelatihan yang menjadi bagian dari perjalanan pembelajaran dan pengembangan kemampuan saya.</p>
+            </div>
+
+            <div class="certificate-grid">
+                <article class="certificate-card reveal">
+                    <div class="certificate-image"><img src="certificates/sertifikat1.jpeg" alt="Sertifikat Start Career as UI UX Designer"></div>
+                    <div class="certificate-content">
+                        <span class="certificate-label">Certificate 01</span>
+                        <h3 class="certificate-title">Peserta Webinar “Start Career as UI/UX Designer”</h3>
+                        <p class="certificate-description">Piagam penghargaan sebagai peserta webinar “Start Career as UI/UX Designer” yang diselenggarakan pada 4 November 2022.</p>
+                        <a class="certificate-link" href="#">Lihat Sertifikat →</a>
+                    </div>
+                </article>
+
+                <article class="certificate-card reveal">
+                    <div class="certificate-image"><img src="certificates/sertifikat2.jpeg" alt="Sertifikat Kompetensi Pemrogram Web Yunior"></div>
+                    <div class="certificate-content">
+                        <span class="certificate-label">Certificate 02</span>
+                        <h3 class="certificate-title">Sertifikat Kompetensi — Pemrogram Web Yunior</h3>
+                        <p class="certificate-description">Sertifikat kompetensi pada bidang Pemrograman &amp; Pengembangan Piranti Lunak dengan kualifikasi Pemrogram Web Yunior (Junior Web Programmer).</p>
+                        <a class="certificate-link" href="#">Lihat Sertifikat →</a>
+                    </div>
+                </article>
+
+                <article class="certificate-card reveal">
+                    <div class="certificate-image"><img src="certificates/sertifikat3.jpeg" alt="Sertifikat SENATIB 2024"></div>
+                    <div class="certificate-content">
+                        <span class="certificate-label">Certificate 03</span>
+                        <h3 class="certificate-title">Seminar Nasional Teknologi Informasi dan Bisnis (SENATIB) 2024</h3>
+                        <p class="certificate-description">Sertifikat sebagai peserta seminar nasional dengan tema “Transformasi Bisnis melalui IoT dan AI: Peluang dan Tantangan”.</p>
+                        <a class="certificate-link" href="#">Lihat Sertifikat →</a>
+                    </div>
+                </article>
+
+                <article class="certificate-card reveal">
+                    <div class="certificate-image"><img src="certificates/sertifikat4.jpeg" alt="Sertifikat Dicoding Microsoft Fabric"></div>
+                    <div class="certificate-content">
+                        <span class="certificate-label">Certificate 04</span>
+                        <h3 class="certificate-title">Belajar Penerapan Data Science dengan Microsoft Fabric</h3>
+                        <p class="certificate-description">Sertifikat kompetensi kelulusan dari Dicoding atas keberhasilan menyelesaikan kelas “Belajar Penerapan Data Science dengan Microsoft Fabric”.</p>
+                        <a class="certificate-link" href="https://www.dicoding.com/certificates/2VX3O2L7JXYQ" target="_blank" rel="noopener noreferrer">Verifikasi Sertifikat →</a>
+                    </div>
+                </article>
+            </div>
+
+            <div class="linkedin-box reveal">Profil profesional saya: <a href="https://www.linkedin.com/in/munfarid-zulkahfi" target="_blank" rel="noopener noreferrer">LinkedIn Munfarid Zulkahfi</a></div>
+        </div>
+    </section>
+
+<section
+    id="portfolio"
+>
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="section-header">
+
+            <span class="section-number">
+                04 — PORTFOLIO
+            </span>
+
+            <h2 class="section-title">
+                Selected Works
+            </h2>
+
+
+            <p class="section-description">
+
+                Beberapa project yang merepresentasikan
+                pengalaman saya dalam pengembangan website
+                dan sistem informasi.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PROJECT GRID
+        ================================================== -->
+
+        <div class="portfolio-grid">
+
+
+            <!-- =================================================
+                 PROJECT 01
+            ================================================== -->
+
+            <article class="portfolio-card">
+
+
+                <!-- IMAGE -->
+
+                <div class="portfolio-image">
+
+                    <img
+                        src="portofolio/project1.jpeg"
+                        alt="Website E-Commerce Fashion"
+                    >
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="portfolio-content">
+
+
+                    <span class="portfolio-label">
+                        Project 01
+                    </span>
+
+
+                    <h3 class="portfolio-title">
+                        Website E-Commerce Fashion
+                    </h3>
+
+
+                    <p class="portfolio-description">
+
+                        Website e-commerce yang dirancang untuk
+                        membantu proses penjualan produk fashion
+                        secara online. Sistem mencakup katalog
+                        produk, informasi produk, dan pengelolaan
+                        data yang mendukung kebutuhan operasional toko.
+
+                    </p>
+
+
+                    <!-- TECHNOLOGY -->
+
+                    <div class="portfolio-tech">
+
+                        <span>
+                            Laravel
+                        </span>
+
+                        <span>
+                            Filament
+                        </span>
+
+                        <span>
+                            MySQL
+                        </span>
+
+                    </div>
+
+
+                    <!-- LINK -->
+
+                    <a
+                        href="#"
+                        class="portfolio-link"
+                    >
+                        Lihat Project →
+                    </a>
+
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 PROJECT 02
+            ================================================== -->
+
+            <article class="portfolio-card">
+
+
+                <!-- IMAGE -->
+
+                <div class="portfolio-image">
+
+                    <img
+                        src="portofolio/project2.jpeg"
+                        alt="Website Bina Karya"
+                    >
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="portfolio-content">
+
+
+                    <span class="portfolio-label">
+                        Project 02
+                    </span>
+
+
+                    <h3 class="portfolio-title">
+                        Website Bina Karya
+                    </h3>
+
+
+                    <p class="portfolio-description">
+
+                        Website informasi dan profil organisasi
+                        yang dirancang untuk memperkenalkan
+                        kegiatan, informasi, dan program Bina Karya
+                        kepada masyarakat secara lebih terstruktur
+                        dan mudah diakses.
+
+                    </p>
+
+
+                    <!-- TECHNOLOGY -->
+
+                    <div class="portfolio-tech">
+
+                        <span>
+                            PHP
+                        </span>
+
+                        <span>
+                            MySQL
+                        </span>
+
+                        <span>
+                            HTML
+                        </span>
+
+                        <span>
+                            CSS
+                        </span>
+
+                    </div>
+
+
+                    <!-- LINK -->
+
+                    <a
+                        href="#"
+                        class="portfolio-link"
+                    >
+                        Lihat Project →
+                    </a>
+
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+    <section class="experience" id="experience">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">05 — Experience</div>
+                <h2 class="section-title">Experience</h2>
+                <p class="section-copy">Pengalaman akademik dan profesional yang membentuk kemampuan saya dalam bidang teknologi dan sistem informasi.</p>
+            </div>
+
+            <div class="experience-list">
+                <article class="experience-item reveal">
+                    <div class="experience-number">01</div>
+                    <div class="experience-content">
+                        <span class="experience-label">Internship</span>
+                        <h3 class="experience-title">PT Media Sarana Digital Indo</h3>
+                        <div class="experience-meta">Staff Magang</div>
+                        <p class="experience-description">Terlibat dalam pengelolaan data perusahaan serta membantu mengerjakan project website yang diberikan oleh perusahaan. Pengalaman ini memberikan pemahaman langsung mengenai proses kerja, pengelolaan data, penyelesaian kebutuhan project, dan penerapan kemampuan teknis.</p>
+                        <div class="experience-tags"><span>Data Management</span><span>Web Development</span><span>Teamwork</span></div>
+                    </div>
+                </article>
+
+                <article class="experience-item reveal">
+                    <div class="experience-number">02</div>
+                    <div class="experience-content">
+                        <span class="experience-label">Education</span>
+                        <h3 class="experience-title">Universitas Duta Bangsa Surakarta</h3>
+                        <div class="experience-meta">S1 Sistem Informasi · IPK 3.53</div>
+                        <p class="experience-description">Menempuh pendidikan pada program studi Sistem Informasi dan mempelajari teknologi informasi, analisis sistem, pengembangan aplikasi, database, serta penerapan teknologi untuk kebutuhan organisasi dan bisnis.</p>
+                        <div class="experience-tags"><span>Sistem Informasi</span><span>Web Development</span><span>Database</span><span>System Analysis</span></div>
+                    </div>
+                </article>
+
+                <article class="experience-item reveal">
+                    <div class="experience-number">03</div>
+                    <div class="experience-content">
+                        <span class="experience-label">Project Experience</span>
+                        <h3 class="experience-title">Web Development</h3>
+                        <div class="experience-meta">Laravel · Filament · MySQL</div>
+                        <p class="experience-description">Memiliki pengalaman membangun dan mengembangkan website menggunakan Laravel dan Filament dengan MySQL sebagai database. Fokus pengembangan mencakup pengelolaan data, pembuatan fitur aplikasi, serta penyesuaian sistem berdasarkan kebutuhan project.</p>
+                        <div class="experience-tags"><span>Laravel</span><span>Filament</span><span>PHP</span><span>MySQL</span></div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">06 — Contact</div>
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-copy">Terbuka untuk project, peluang kerja, kolaborasi, maupun diskusi mengenai teknologi dan sistem informasi.</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-intro reveal">
+                    <h3>Get in Touch</h3>
+                    <p>Punya project, peluang kerja, atau ingin berdiskusi? Silakan hubungi saya melalui salah satu kontak yang tersedia. Saya dengan senang hati terbuka untuk peluang belajar, kolaborasi, dan pengembangan project.</p>
+                </div>
+
+                <div class="contact-list">
+                    <a class="contact-item reveal" href="https://wa.me/6283191881431" target="_blank" rel="noopener noreferrer"><span class="contact-label">WhatsApp</span><span class="contact-value gold">083191881431</span></a>
+                    <a class="contact-item reveal" href="mailto:faridkahfi926@gmail.com"><span class="contact-label">Email</span><span class="contact-value">faridkahfi926@gmail.com</span></a>
+                    <a class="contact-item reveal" href="https://www.linkedin.com/in/munfarid-zulkahfi" target="_blank" rel="noopener noreferrer"><span class="contact-label">LinkedIn</span><span class="contact-value">linkedin.com/in/munfarid-zulkahfi</span></a>
+                    <a class="contact-item reveal" href="https://www.instagram.com/munkahf_" target="_blank" rel="noopener noreferrer"><span class="contact-label">Instagram</span><span class="contact-value">@munkahf_</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-container">
+        <p class="footer-text">© 2026 <span class="footer-name">Munfarid Zulkahfi</span>. All Rights Reserved.</p>
+        <p class="footer-text">SISTEM INFORMASI · WEB DEVELOPMENT</p>
+    </div>
+</footer>
+
+<script>
+    // Scroll reveal
+    const revealItems = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    revealItems.forEach(el => revealObserver.observe(el));
+
+    // Active navbar item while scrolling
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                const current = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                if (current) current.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    sections.forEach(section => navObserver.observe(section));
+
+    // Gentle mouse parallax for the hero photo
+    const parallax = document.querySelector('[data-parallax]');
+    if (parallax && window.matchMedia('(pointer:fine)').matches) {
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            const amount = parseFloat(parallax.dataset.parallax) || 0.05;
+            parallax.style.transform = `translate3d(${x * 14 * amount * 10}px, ${y * 10 * amount * 10}px, 0)`;
+        });
+    }
+
+    // Subtle cursor glow
+    const glow = document.querySelector('.cursor-glow');
+    if (glow && window.matchMedia('(pointer:fine)').matches) {
+        window.addEventListener('mousemove', (e) => {
+            glow.style.left = `${e.clientX}px`;
+            glow.style.top = `${e.clientY}px`;
+        });
+    }
+</script>
+
+</body>
+</html>
